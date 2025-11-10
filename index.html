@@ -1,137 +1,308 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-Hant">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>QW Chen - Welcome</title>
-<style>
-  /* ==== 背景 星空粒子 ==== */
-  body, html {
-    margin:0; padding:0; height:100%; font-family:"Segoe UI",sans-serif; color:#fff;
-    overflow-y:auto; /* 允許垂直滑動 */
-  }
-  body { background: radial-gradient(ellipse at bottom, #0d1b2a 0%, #000000 100%); }
-  canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QW | 個人介紹</title>
+  <style>
+    * { box-sizing: border-box; scroll-behavior: smooth; }
+    body { font-family: "Noto Sans TC", sans-serif; margin: 0; color: #222; background-color: #fff; }
 
-  /* ==== 語言切換按鈕 ==== */
-  .lang-toggle {
-    position:absolute; top:20px; right:20px;
-    background: rgba(255,255,255,0.1);
-    border:1px solid rgba(255,255,255,0.3); border-radius:8px;
-    padding:5px 12px; cursor:pointer; color:#fff; backdrop-filter: blur(8px);
-    transition: background 0.3s;
-  }
-  .lang-toggle:hover { background: rgba(255,255,255,0.2); }
+    /* 導覽列 */
+    nav {
+      position: fixed;
+      top: 5px;
+      width: 100%;
+      background: white;
+      border-bottom: 1px solid #eee;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+    nav .logo { font-size: 1.2rem; font-weight: bold; }
+    nav ul { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+    nav a { color: #222; text-decoration: none; font-weight: 500; }
+    nav a:hover { text-decoration: underline; }
+    #langSwitch {
+      padding: 5px 10px;
+      border: 1px solid #222;
+      background: #fff;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    #langSwitch:hover { background: #222; color: #fff; }
 
-  /* ==== 主卡片 ==== */
-  .card {
-    max-width:600px; margin:80px auto; padding:30px;
-    background: rgba(255,255,255,0.1); border-radius:20px;
-    backdrop-filter: blur(10px); box-shadow:0 0 20px rgba(0,0,0,0.5);
-    text-align:center; line-height:1.6;
-    overflow:visible; /* 保證內容不被截掉 */
-  }
-  .avatar {
-  width:120px;
-  height:120px;
-  border-radius:50%;  /* 讓它變圓形 */
-  object-fit: cover;  /* 保持比例，不變形 */
-  margin:0 auto 20px auto;
-  display:block;
-  }
-  h1{margin:10px 0;font-size:1.8em;}
-  h2{font-weight:normal;font-size:1.2em;margin:5px 0 15px;}
-  .section-title{margin-top:20px;font-size:1.2em;font-weight:bold;border-bottom:1px solid rgba(255,255,255,0.2);display:inline-block;padding-bottom:4px;}
-  ul{list-style:none;padding:0;} ul li{margin:6px 0;}
-  .links{margin-top:20px;} .links a{margin:0 10px;color:#00d4ff;text-decoration:none;font-weight:bold;transition:color 0.3s;}
-  .links a:hover{color:#1affff;}
-</style>
+    /* 首屏區塊 */
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding-top: 100px;
+      background: #f9f9f9;
+    }
+    .hero-text { flex: 1 1 400px; padding: 40px; }
+    .hero-text h1 { font-size: 3rem; margin-bottom: 10px; }
+    .hero-text p { font-size: 1.2rem; color: #555; }
+    .hero-text .buttons { margin-top: 25px; }
+    .hero-text .buttons a {
+      display: inline-block; padding: 10px 20px; border: 1px solid #222; margin-right: 10px;
+      text-decoration: none; color: #222; transition: 0.2s;
+    }
+    .hero-text .buttons a:hover { background: #222; color: #fff; }
+    .hero-img { flex: 1 1 400px; text-align: center; padding: 40px; }
+    .hero-img img { max-width: 80%; border-radius: 12px; }
+
+    section { max-width: 900px; margin: 100px auto; padding: 0 20px; }
+    h2 { border-left: 5px solid #000; padding-left: 10px; margin-bottom: 20px; }
+
+    /* 證照區塊(滑動效果) */
+    .certs-slider {
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 10px;
+      scroll-behavior: smooth;
+    }
+    .certs-slider::-webkit-scrollbar { display: none; }
+    .cert-card {
+      min-width: 250px;
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      text-align: center;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #eee;
+      background: #fafafa;
+    }
+    .cert-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #eee;
+    }
+    .cert-card p { margin-top: 10px; color: #555; font-weight: 500; }
+    .cert-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.8);
+      border: 1px solid #ccc;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+    .cert-arrow.left { left: -15px; }
+    .cert-arrow.right { right: -15px; }
+    .cert-arrow:hover { background: #222; color: #fff; border-color: #222; }
+
+    /* 學歷 & 經歷 */
+    .education, .experience { margin-bottom: 30px; }
+    .education ul, .experience ul { padding-left: 20px; }
+    .education li, .experience li { margin-bottom: 10px; color: #555; }
+
+    footer { text-align: center; padding: 30px; color: #777; border-top: 1px solid #eee; }
+  </style>
 </head>
 <body>
-<canvas id="bg"></canvas>
-<button class="lang-toggle" onclick="toggleLang()">點擊切換中/EN</button>
 
-<div class="card">
-  <img src="下載.png" alt="avatar" class="avatar">
-  <h1 id="name">QW Chen</h1>
-  <h2 id="tagline">努力摸索 AI 運用並試圖結合金融的學習者</h2>
-  <p id="email">📧 qiwenqwc@gmail.com</p>
-  <p id="edu">🎓 銘傳大學財務金融學系</p>
-
-  <div>
-    <div class="section-title" id="skills-title">技能 (Skills)</div>
-    <ul id="skills">
-      <li>Python</li>
-      <li>Excel, Power BI</li>
-      <li>財務分析、資料視覺化</li>
-      <li>問題解決 / 擅長提問</li>
+  <!-- 導覽列 -->
+  <nav>
+    <div class="logo">QW</div>
+    <ul>
+      <li><a href="#about" data-lang-zh="關於我" data-lang-en="About">關於我</a></li>
+      <li><a href="#skills" data-lang-zh="技能" data-lang-en="Skills">技能</a></li>
+      <li><a href="#certs" data-lang-zh="證照" data-lang-en="Certifications">證照</a></li>
+      <li><a href="#education" data-lang-zh="學歷" data-lang-en="Education">學歷</a></li>
+      <li><a href="#experience" data-lang-zh="經歷" data-lang-en="Experience">經歷</a></li>
+      <li><a href="#projects" data-lang-zh="作品" data-lang-en="Projects">作品</a></li>
+      <li><a href="#contact" data-lang-zh="聯絡" data-lang-en="Contact">聯絡</a></li>
     </ul>
-  </div>
+    <div>
+      <button id="langSwitch">English</button>
+    </div>
+  </nav>
 
-  <div>
-    <div class="section-title" id="interests-title">興趣 (Interests)</div>
-    <ul id="interests">
-      <li>對資料與趨勢分析有興趣 📊</li>
-      <li>小說 📖</li>
-      <li>AI 與自動化 🤖</li>
+  <!-- 首屏 -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1 data-lang-zh="你好，我是 陳琪雯" data-lang-en="Hello, I'm QW">QW Chen</h1>
+      <p data-lang-zh="AI 新秀計畫參與者" data-lang-en="AI Emerging Talent Program Participant">努力摸索 AI 運用並試圖結合現實應用的學習者</p>
+      <div class="buttons">
+        <a href="#projects" data-lang-zh="查看作品" data-lang-en="View Projects">查看作品</a>
+        <a href="#contact" data-lang-zh="聯絡我" data-lang-en="Contact Me">聯絡我</a>
+      </div>
+    </div>
+    <div class="hero-img">
+      <img src="下載.png" alt="QW 大頭照" />
+    </div>
+  </section>
+
+  <!-- 關於我 -->
+  <section id="about">
+    <h2 data-lang-zh="👋 關於我" data-lang-en="👋 About Me">👋 關於我</h2>
+    <p data-lang-zh="我是一名對資料與 AI 充滿熱情的人，喜歡嘗試新技術，目前專注於從資料處理到可視化儀表板以及 AI 的運用。"
+       data-lang-en="I am passionate about data and AI, enjoy exploring new technologies, and currently focus on data processing, dashboard visualization, and AI applications.">
+       我是一名對資料與 AI 充滿熱情的人，喜歡嘗試新技術，目前專注於從資料處理到可視化儀表板以及 AI 的運用。
+    </p>
+  </section>
+
+  <!-- 技能 -->
+  <section id="skills">
+    <h2 data-lang-zh="🛠 技能" data-lang-en="🛠 Skills">🛠 技能</h2>
+    <ul>
+      <li data-lang-zh="程式設計：Python" 
+          data-lang-en="Programming: Python">
+          程式設計：Python
+      </li>
+  
+      <li data-lang-zh="資料與簡報工具：Word, Excel, PPT, Canva" 
+          data-lang-en="Data & Presentation Tools: Word, Excel, PowerPoint, Canva">
+          資料與簡報工具：Word, Excel, PPT, Canva
+      </li>
+  
+      <li data-lang-zh="財務與資料分析：財務分析、資料整理、資料視覺化" 
+          data-lang-en="Finance & Data Analysis: Financial analysis, data organization, and visualization">
+          財務與資料分析：財務分析、資料整理、資料視覺化
+      </li>
+  
+      <li data-lang-zh="問題解決能力：問題分析與解決" 
+          data-lang-en="Problem-Solving: Analyzing and resolving issues effectively">
+          問題解決能力：問題分析與解決
+      </li>
     </ul>
-  </div>
+  </section>
 
-  <div class="links">
-    <a href="https://github.com/qiwenqwc" target="_blank">GitHub</a>
-  </div>
-</div>
+  <!-- 證照 -->
+  <section id="certs">
+    <h2 data-lang-zh="🏅 證照" data-lang-en="🏅 Certifications">🏅 證照</h2>
+    <div style="position: relative;">
+      <button class="cert-arrow left">&#8592;</button>
+      <div class="certs-slider">
+        <div class="cert-card">
+          <img src="https://via.placeholder.com/300x160.png?text=Python" alt="Python 資料分析認證" />
+          <p data-lang-zh="Python 資料分析認證" data-lang-en="Python Data Analysis Certification">Python 資料分析認證</p>
+        </div>
+        <div class="cert-card">
+          <img src="https://via.placeholder.com/300x160.png?text=AWS" alt="AWS 雲端基礎認證" />
+          <p data-lang-zh="AWS 雲端基礎認證" data-lang-en="AWS Cloud Foundation Certification">AWS 雲端基礎認證</p>
+        </div>
+        <div class="cert-card">
+          <img src="https://via.placeholder.com/300x160.png?text=AI" alt="AI 模型開發認證" />
+          <p data-lang-zh="AI 模型開發認證" data-lang-en="AI Model Development Certification">AI 模型開發認證</p>
+        </div>
+        <div class="cert-card">
+          <img src="https://via.placeholder.com/300x160.png?text=FrontEnd" alt="前端工程師認證" />
+          <p data-lang-zh="前端工程師認證" data-lang-en="Frontend Developer Certification">前端工程師認證</p>
+        </div>
+      </div>
+      <button class="cert-arrow right">&#8594;</button>
+    </div>
+  </section>
 
-<script>
-const data = {
-  zh: {
-    tagline: "努力摸索 AI 運用並試圖結合金融的學習者",
-    edu: "🎓 銘傳大學財務金融學系",
-    skillsTitle: "技能 (Skills)",
-    interestsTitle: "興趣 (Interests)",
-    skills: ["Python","Excel, Power BI","財務分析、資料視覺化","問題解決 / 擅長提問"],
-    interests: ["對資料與趨勢分析有興趣 📊","小說 📖","AI 與自動化 🤖"]
-  },
-  en: {
-    tagline: "A learner exploring AI applications and integrating them with Finance",
-    edu: "🎓 Department of Finance, Ming Chuan University",
-    skillsTitle: "Skills",
-    interestsTitle: "Interests",
-    skills: ["Python","Excel, Power BI","Financial Analysis, Data Visualization","Problem Solving / Asking Questions"],
-    interests: ["Interested in Data & Trend Analysis 📊","Novels 📖","AI & Automation 🤖"]
-  }
-};
-let currentLang = "zh";
-function toggleLang(){
-  currentLang = currentLang==="zh"?"en":"zh";
-  const lang = data[currentLang];
-  document.getElementById("tagline").textContent = lang.tagline;
-  document.getElementById("edu").textContent = lang.edu;
-  document.getElementById("skills-title").textContent = lang.skillsTitle;
-  document.getElementById("interests-title").textContent = lang.interestsTitle;
+  <!-- 學歷 -->
+  <section id="education">
+    <h2 data-lang-zh="🎓 學歷" data-lang-en="🎓 Education">🎓 學歷</h2>
+    <div class="education">
+      <ul>
+        <li data-lang-zh="高中：新北市立竹圍高級中學" data-lang-en="High School: New Taipei Municipal Zhuwei High School">高中：新北市立竹圍高級中學</li>
+        <li data-lang-zh="大學：銘傳大學 財務金融學系" 
+            data-lang-en="University: Ming Chuan University, Department of Finance">
+            大學：銘傳大學 財務金融學系
+        </li>
+        
+        <li data-lang-zh="碩士：銘傳大學 財務金融研究所" 
+            data-lang-en="Master: Ming Chuan University, Graduate Institute of Finance">
+            碩士：銘傳大學 財務金融研究所
+        </li>
 
-  const skillsList = document.getElementById("skills");
-  skillsList.innerHTML = "";
-  lang.skills.forEach(s=>{let li=document.createElement("li"); li.textContent=s; skillsList.appendChild(li);});
+      </ul>
+    </div>
+  </section>
 
-  const interestsList = document.getElementById("interests");
-  interestsList.innerHTML = "";
-  lang.interests.forEach(i=>{let li=document.createElement("li"); li.textContent=i; interestsList.appendChild(li);});
-}
+  <!-- 經歷 -->
+  <section id="experience">
+    <h2 data-lang-zh="💼 經歷" data-lang-en="💼 Experience">💼 經歷</h2>
+    <div class="experience">
+      <ul>
+        <li data-lang-zh="2023–2024：XYZ 公司，資料分析實習生" data-lang-en="2023–2024: XYZ Corp, Data Analysis Intern">2023–2024：XYZ 公司，資料分析實習生</li>
+        <li data-lang-zh="2024–2025：ABC 公司，AI 研發工程師" data-lang-en="2024–2025: ABC Corp, AI Engineer">2024–2025：ABC 公司，AI 研發工程師</li>
+        <li data-lang-zh="參與 AI 新秀計畫專案開發" data-lang-en="Participated in AI Emerging Talent Program projects">參與 AI 新秀計畫專案開發</li>
+      </ul>
+    </div>
+  </section>
 
-/* ==== 星空粒子背景 ==== */
-const canvas = document.getElementById("bg");
-const ctx = canvas.getContext("2d");
-let w,h,particles=[];
-function resize(){ w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight; }
-window.addEventListener("resize", resize);
-resize();
-function Particle(){ this.x=Math.random()*w; this.y=Math.random()*h; this.radius=Math.random()*1.5; this.vx=(Math.random()-0.5)*0.3; this.vy=(Math.random()-0.5)*0.3;}
-Particle.prototype.draw=function(){ctx.beginPath();ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);ctx.fillStyle="white";ctx.fill();}
-function initParticles(num){particles=[];for(let i=0;i<num;i++){particles.push(new Particle());}}
-function animate(){ctx.clearRect(0,0,w,h);for(let p of particles){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;p.draw();}requestAnimationFrame(animate);}
-initParticles(80);
-animate();
-</script>
+  <!-- 作品 -->
+  <section id="projects">
+    <h2 data-lang-zh="🚀 專案作品" data-lang-en="🚀 Projects">🚀 專案作品</h2>
+    <div class="project-gallery">
+      <div class="project-card">
+        <a href="https://your-openbank-demo-link.com" target="_blank">
+          <img src="https://via.placeholder.com/400x200.png?text=OpenBank+Dashboard" alt="OpenBank Dashboard">
+        </a>
+        <p data-lang-zh="OpenBank Dashboard — 數位銀行整合儀表板" data-lang-en="OpenBank Dashboard — Digital Bank Dashboard">
+          OpenBank Dashboard — 數位銀行整合儀表板
+        </p>
+      </div>
+      <div class="project-card">
+        <a href="https://your-fraud-detector-demo-link.com" target="_blank">
+          <img src="https://via.placeholder.com/400x200.png?text=Fraud+Detector" alt="Fraud Detector">
+        </a>
+        <p data-lang-zh="Fraud Detector — 信用卡詐欺分析模型" data-lang-en="Fraud Detector — Credit Card Fraud Detection Model">
+          Fraud Detector — 信用卡詐欺分析模型
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 聯絡 -->
+  <section id="contact">
+    <h2 data-lang-zh="📫 聯絡方式" data-lang-en="📫 Contact">📫 聯絡方式</h2>
+    <p>
+      📧 <a href="mailto:qiwenqwc@gmail.com">qiwenqwc@gmail.com</a><br>
+      💼 <a href="https://github.com/qiwenqwc" target="_blank">GitHub</a>
+    </p>
+  </section>
+
+  <footer>© 2025 QW. Built with ❤️ using HTML & CSS.</footer>
+
+  <!-- 證照滑動 JS -->
+  <script>
+    const slider = document.querySelector('.certs-slider');
+    const leftBtn = document.querySelector('.cert-arrow.left');
+    const rightBtn = document.querySelector('.cert-arrow.right');
+    const scrollAmount = 260;
+
+    leftBtn.addEventListener('click', () => {
+      slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+
+    rightBtn.addEventListener('click', () => {
+      slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+
+    // 語言切換
+    let currentLang = 'zh';
+    const switchBtn = document.getElementById('langSwitch');
+    switchBtn.addEventListener('click', () => {
+      currentLang = currentLang === 'zh' ? 'en' : 'zh';
+      document.querySelectorAll('[data-lang-zh]').forEach(el => {
+        el.textContent = el.getAttribute(currentLang === 'zh' ? 'data-lang-zh' : 'data-lang-en');
+      });
+      switchBtn.textContent = currentLang === 'zh' ? 'English' : '中文';
+    });
+  </script>
+
 </body>
 </html>
