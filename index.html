@@ -64,15 +64,16 @@
       display: flex;
       overflow-x: auto;
       gap: 20px;
-      scroll-snap-type: x mandatory;
       padding-bottom: 10px;
       scroll-behavior: smooth;
     }
     .certs-slider::-webkit-scrollbar { display: none; }
     .cert-card {
-      min-width: 250px;
+      min-width: 180px;
       flex: 0 0 auto;
-      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
       padding: 10px;
       border-radius: 8px;
@@ -81,12 +82,17 @@
     }
     .cert-card img {
       width: 100%;
-      height: 160px;
+      height: 120px;
       object-fit: cover;
       border-radius: 8px;
       background: #eee;
     }
-    .cert-card p { margin-top: 10px; color: #555; font-weight: 500; }
+    .cert-card p {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: #555;
+      font-weight: 500;
+    }
     .cert-arrow {
       position: absolute;
       top: 50%;
@@ -106,7 +112,6 @@
     .cert-arrow.left { left: -15px; }
     .cert-arrow.right { right: -15px; }
     .cert-arrow:hover { background: #222; color: #fff; border-color: #222; }
-
     /* 學歷 & 經歷 */
     .education, .experience { margin-bottom: 30px; }
     .education ul, .experience ul { padding-left: 20px; }
@@ -191,15 +196,12 @@
   </ul>
 </section>
 
-<!-- 證照 -->
-<section id="certs">
-  <h2 data-lang-zh="🏅 證照" data-lang-en="🏅 Certifications">🏅 證照</h2>
-
-  <div style="position: relative;">
-    <button class="cert-arrow left">&#8592;</button>
-
-    <div class="certs-slider">
-      <div class="cert-group">
+  <!-- 證照 -->
+  <section id="certs">
+    <h2 data-lang-zh="🏅 證照" data-lang-en="🏅 Certifications">🏅 證照</h2>
+    <div style="position: relative;">
+      <button class="cert-arrow left">&#8592;</button>
+      <div class="certs-slider">
         <div class="cert-card">
           <img src="images/certs/securities.jpg" alt="證券商業務員" />
           <p data-lang-zh="證券商業務員" data-lang-en="Qualification Exam for Securities Specialist">證券商業務員</p>
@@ -225,24 +227,21 @@
           <p data-lang-zh="人身保險業務員" data-lang-en="The Life Insurance Specialist">人身保險業務員</p>
         </div>
         <div class="cert-card">
-          <img src="images/certs/netzero.png" alt="淨零碳規劃管理師-初級能力鑑定" />
+          <img src="images/certs/netzero.jpg" alt="淨零碳規劃管理師-初級能力鑑定" />
           <p data-lang-zh="淨零碳規劃管理師－初級能力鑑定" data-lang-en="Net-Zero Carbon Emission Planning Administrator - Associate Level">淨零碳規劃管理師－初級能力鑑定</p>
         </div>
         <div class="cert-card">
-          <img src="images/certs/tqc_word.png" alt="TQC-OA - Word" />
+          <img src="images/certs/tqc_word.jpg" alt="TQC-OA - Word" />
           <p data-lang-zh="TQC-OA－Word" data-lang-en="TQC-OA - Word">TQC-OA－Word</p>
         </div>
         <div class="cert-card">
-          <img src="images/certs/tqc_ppt.png" alt="TQC-OA - PowerPoint" />
+          <img src="images/certs/tqc_ppt.jpg" alt="TQC-OA - PowerPoint" />
           <p data-lang-zh="TQC-OA－PowerPoint" data-lang-en="TQC-OA - PowerPoint">TQC-OA－PowerPoint</p>
         </div>
       </div>
+      <button class="cert-arrow right">&#8594;</button>
     </div>
-
-    <button class="cert-arrow right">&#8594;</button>
-  </div>
-</section>
-
+  </section>
 
   <!-- 學歷 -->
   <section id="education">
